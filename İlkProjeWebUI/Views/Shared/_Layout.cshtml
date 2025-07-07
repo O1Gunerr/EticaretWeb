@@ -1,0 +1,93 @@
+﻿@inherits System.Web.Mvc.WebViewPage<dynamic>
+@using System.Web.Optimization
+@using System.Web.Routing
+
+@{
+    var title = ViewBag.Title as string ?? "Samsung.com";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>@title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          rel="stylesheet" />
+    <link href="~/theme/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index","Home")">
+                <i class="fas fa-store me-2"></i>
+                <span class="fw-bold">SAMSUNG</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link @((title=="Ana Sayfa")?"active":"") rounded-pill px-3"
+                           href="@Url.Action("Index","Home")"
+                           style="background-color: #ffc107; color: #000;">
+                            Ana Sayfa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @((title=="Ürünler")?"active":"")"
+                           href="@Url.Action("List","Home")">
+                            Ürünler
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @((title=="Hakkımızda")?"active":"")"
+                           href="@Url.Action("About","Home")">
+                            Hakkımızda
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @((title=="İletişim")?"active":"")"
+                           href="@Url.Action("Contact","Home")">
+                            İletişim
+                        </a>
+                    </li>
+                </ul>
+
+                <form class="d-flex me-3" method="get" action="@Url.Action("List","Home")">
+                    <input name="query"
+                           class="form-control me-2 bg-white"
+                           placeholder="Ürün Ara…"
+                           style="width: 220px;" />
+                    <button class="btn btn-warning text-dark" type="submit">Ara</button>
+                </form>
+
+                <a href="@Url.Action("Index","Cart")"
+                   class="btn btn-outline-light position-relative d-flex align-items-center">
+                    <i class="fas fa-shopping-cart me-1"></i>
+                    Sepet
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                        @(Session["CartCount"] ?? 0)
+                    </span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        @RenderBody()
+    </div>
+
+    <footer class="border-top text-center py-3 mt-5">
+        &copy; @DateTime.Now.Year — Samsung.com
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

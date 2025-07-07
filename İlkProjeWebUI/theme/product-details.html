@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Samsung Galaxy S25</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    body { font-family: 'Roboto', sans-serif; background-color: #fff; color: #1a1a1a; }
+    .navbar { background-color: #1428A0; }
+    .navbar-brand, .nav-link, .btn-outline-light { color: white !important; }
+    .product-title { font-size: 36px; font-weight: bold; }
+    .product-description { font-size: 16px; margin-top: 15px; }
+    .rating-stars i { color: #f5c518; font-size: 18px; }
+    .btn-buy { background-color: #28a745; color: white; font-weight: 600; padding: 10px 24px; border-radius: 4px; border: none; }
+    .btn-buy:hover { background-color: #218838; }
+    footer { background-color: #f1f1f1; padding: 20px 0; text-align: center; font-size: 14px; color: #777; border-top: 1px solid #ccc; }
+    .nav-tabs .nav-link { color: #000; font-weight: 500; background-color: #f8f9fa; border: 1px solid #dee2e6; margin-right: 4px; }
+    .nav-tabs .nav-link.active { background-color: #fff; border-color: #dee2e6 #dee2e6 #fff; }
+  </style>
+</head>
+<body>
+
+  
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">Samsung</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Ürünler</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Galaxy S</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Teknolojiler</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Destek</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+ 
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="/theme/img/phone.jpg" class="img-fluid rounded w-100" alt="Samsung Galaxy S25">
+      </div>
+      <div class="col-md-6">
+        <h1 class="product-title">Galaxy S25 Ultra</h1>
+        <span class="badge badge-success">Stokta</span>
+        <span class="text-muted ml-2">Ürün Kodu: #2365656</span>
+
+        <p class="product-description mt-3">
+          Geleceğin teknolojisi avuçlarınızda. 200MP kamera, 8K video, yapay zekâ gücü, 5G hızı ve daha fazlası!
+        </p>
+
+        <div class="rating-stars mb-2">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <i class="far fa-star"></i>
+            &nbsp;
+            
+        <a href="yorum-yap.html" style="color: skyblue; cursor: pointer;">Write a rewiev</a>
+        </div>
+        <p style="color: red"><strong >$400</strong></p>
+        <button class="btn btn-buy">Sepete Ekle</button>
+      </div>
+    </div>
+
+   
+    <ul class="nav nav-tabs mt-5" id="tabMenu" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"style="color: black !important;" >Özellikler</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" style="color: black !important;">Yorumlar</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" style="color: black !important;">Daha Fazla</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" id="dropdown1-tab" data-toggle="tab" href="#dropdown1" role="tab" style="color: black !important;">Teknik Bilgi</a>
+          <a class="dropdown-item" id="dropdown2-tab" data-toggle="tab" href="#dropdown2" role="tab" style="color: black !important;">Garanti</a>
+        </div>
+      </li>
+    </ul>
+    <div class="tab-content border p-4" id="tabContent">
+      <div class="tab-pane fade show active" id="home" role="tabpanel">
+        <p>6.8" Dynamic AMOLED 2X ekran, Snapdragon 8 Gen 3, 200MP kamera, 5000mAh batarya</p>
+      </div>
+      <div class="tab-pane fade" id="profile" role="tabpanel">
+        <p>Henüz yorum yapılmadı. İlk siz yapın!</p>
+      </div>
+      <div class="tab-pane fade" id="dropdown1" role="tabpanel">
+        <p>Ağırlık: 230g, İşletim Sistemi: Android 14, 5G: Var</p>
+      </div>
+      <div class="tab-pane fade" id="dropdown2" role="tabpanel">
+        <p>2 yıl Samsung Türkiye garantisi. 14 gün içinde iade garantisi.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      &copy; 2025 Samsung Türkiye. Tüm hakları saklıdır.
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

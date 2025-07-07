@@ -1,0 +1,9 @@
+﻿@model IEnumerable<İlkProjeWebUI.Models.ProductModel>
+
+@{
+    ViewBag.Title = "Ürünler";
+}
+
+<h2 class="mb-4">Tüm Ürünler</h2>
+
+@Html.Partial("_ProductList", Model)
