@@ -1,0 +1,19 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml"; // Eğer admin için özel bir layout'un yoksa bunu silebilirsin
+    ViewBag.Title = "Admin Paneli";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Admin Paneline Hoşgeldiniz</h2>
+    <div class="alert alert-info">
+        Burası yönetim panelinizdir.<br />
+        Buradan ürünleri, kategorileri ve siparişleri yönetebilirsiniz.
+    </div>
+    <ul>
+        <li><a href="@Url.Action("Index","Products")">Ürün Yönetimi</a></li>
+        <li><a href="@Url.Action("Index","Category")">Kategori Yönetimi</a></li>
+        <li><a href="@Url.Action("Index","Orders")">Sipariş Yönetimi</a></li>
+    </ul>
+</div>

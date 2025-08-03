@@ -1,0 +1,88 @@
+﻿@model İlkProjeWebUI.Models.Cart
+@{
+    ViewBag.Title = "Sepet";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="mb-4">Alışveriş Sepetim</h2>
+
+            @if (Model.CartLines.Any())
+            {
+                <div class="table-responsive shadow-sm bg-white rounded">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Adet</th>
+                                <th scope="col">Ürün</th>
+                                <th scope="col" class="text-end">Birim Fiyat</th>
+                                <th scope="col" class="text-end">Tutar</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var line in Model.CartLines)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="~/Uploads/@line.Product.Image"
+                                             class="img-fluid rounded"
+                                             style="width:60px;"
+                                             alt="@line.Product.Name" />
+                                    </td>
+                                    <td>@line.Quantity</td>
+                                    <td>@line.Product.Name</td>
+                                    <td class="text-end">@line.Product.Price.ToString("c")</td>
+                                    <td class="text-end">
+                                        @( (line.Product.Price * line.Quantity).ToString("c") )
+                                    </td>
+                                    <td>
+                                        <form action="@Url.Action("RemoveFromCart", "Cart", new { id = line.Product.Id })" method="post" style="display:inline;">
+                                            <button type="submit" class="cart-remove-btn" title="Remove from cart">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-end fw-bold">Genel Toplam:</td>
+                                <td class="text-end fw-bold">
+                                    @Model.Total().ToString("c")
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="text-center" >
+                    <a  href="~/Home/List" class="btn btn-primary ">Alışverişe Devam Et</a>
+                      
+                    <a href="~/Cart/Checkout" class="btn btn-primary ">Alışverişi Tamamla</a>
+                    
+                </div>
+            }
+            else
+            {
+                <div class="card border-0 text-center py-5">
+                    <div class="card-body">
+                        <i class="fa fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h4 class="card-title">Sepetiniz Boş</h4>
+                        <p class="card-text text-muted">
+                            Henüz sepete eklenmiş ürününüz yok.
+                        </p>
+                        <a href="@Url.Action("Index", "Home")"
+                           class="btn btn-primary">
+                            Alışverişe Devam Et
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

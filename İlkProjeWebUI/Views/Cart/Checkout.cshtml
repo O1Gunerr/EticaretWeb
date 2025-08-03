@@ -1,0 +1,93 @@
+﻿@model İlkProjeWebUI.Models.ShippingDetails
+@{
+    ViewBag.Title = "Checkout";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12 "></div>
+        <h2>Sipariş Bilgileriniz</h2>
+        <hr />
+        @using (Html.BeginForm("Checkout", "Cart", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.ValidationSummary()
+            <div class="form-group row mb-3">
+                @Html.LabelFor(m => m.Username, "Kullanıcı Adı", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    <span class="badge-danger">
+                        @User.Identity.Name
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                @Html.LabelFor(m => m.AdresBasligi, "Adres Başlığı", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.AdresBasligi, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AdresBasligi, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                @Html.LabelFor(m => m.Adres, "Adres", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.Adres, new { @class = "form-control " })
+                    @Html.ValidationMessageFor(m => m.Adres, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                @Html.LabelFor(m => m.sehir, "Şehir", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.sehir, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.sehir, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                @Html.LabelFor(m => m.Semt, "Semt", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.Semt, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Semt, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mb-4">
+                @Html.LabelFor(m => m.Mahalle, "Mahalle", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.Mahalle, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Mahalle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                @Html.LabelFor(m => m.AdresTarif, "AdresTarif", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(m => m.AdresTarif, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AdresTarif, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+}
+

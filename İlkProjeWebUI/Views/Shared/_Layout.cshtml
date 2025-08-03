@@ -2,9 +2,17 @@
 @using System.Web.Optimization
 @using System.Web.Routing
 
+@* Sepet modelini okumak için gerekli namespace *@
+@using İlkProjeWebUI.Models
+
 @{
     var title = ViewBag.Title as string ?? "Samsung.com";
     Layout = null;
+
+    // Session["Cart"] içinden Cart’ı al, yoksa yeni bir Cart örneği oluştur
+    var cart = Session["Cart"] as Cart ?? new Cart();
+    // Sepetteki toplam adet
+    var cartCount = cart.CartLines.Sum(l => l.Quantity);
 }
 
 <!DOCTYPE html>
@@ -72,9 +80,10 @@
                     <i class="fas fa-shopping-cart me-1"></i>
                     Sepet
                     <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-                        @(Session["CartCount"] ?? 0)
+                        @cartCount
                     </span>
                 </a>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>

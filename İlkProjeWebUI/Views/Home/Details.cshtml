@@ -8,7 +8,7 @@
 <div class="container py-5">
     <div class="row g-4">
         <div class="col-md-6">
-            <img src="~/Uploads/@Model.Image" alt="@Model.Name" class="img-fluid rounded shadow-sm w-100" style="object-fit: cover; max-height: 400px;" />
+            <img src="~/Uploads/@Model.Image" alt="@Model.Name"  class="img-fluid rounded shadow-sm w-100 "  style="object-fit:contain ; max-height:400px;" />
         </div>
         <div class="col-md-6 d-flex flex-column">
             <h1 class="display-5 fw-bold">@Model.Name</h1>
@@ -24,9 +24,16 @@
             </div>
 
             <h3 class="text-danger fw-bold">@Model.Price ₺</h3>
-            <form action="@Url.Action("AddToCart", "Cart", new { id = Model.Id })" method="post">
+
+            @using (Html.BeginForm("AddToCart", "Cart"))
+            {
+                @Html.HiddenFor(i => i.Id)
+
                 <button type="submit" class="btn btn-success btn-lg mt-3 px-4 py-2">Sepete Ekle</button>
-            </form>
+
+            }
+          
+
         </div>
     </div>
 

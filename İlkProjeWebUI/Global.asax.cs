@@ -1,4 +1,5 @@
 ﻿using İlkProjeWebUI.Entity;
+using İlkProjeWebUI.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,9 +21,13 @@ namespace İlkProjeWebUI
             
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            Database.SetInitializer(new DataInitializer());
+            Database.SetInitializer(new IdentityInitializer());
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
 
-    
+
+
         }
     }
 }
