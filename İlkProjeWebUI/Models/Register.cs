@@ -24,6 +24,7 @@ namespace İlkProjeWebUI.Models
         public string Email { get; set; }
         [Required]
         [DisplayName("Şifre")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
         [DisplayName("Şifre Tekrar")]

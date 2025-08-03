@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace İlkProjeWebUI.Entity
 {
-    public class DataInitializer : DropCreateDatabaseAlways<DataContext>
+    public class DataInitializer : DropCreateDatabaseIfModelChanges<DataContext>
     {
         protected override void Seed(DataContext context)
         {
@@ -34,6 +34,8 @@ namespace İlkProjeWebUI.Entity
                 new Product { Name = "Galaxy Z Flip 5", Description = "Katlanabilir ekranıyla taşınabilirliği yeniden tanımlar.", Price = 30000, Stock = 20, IsApproved = true, IsHome = true, CategoryId = 1, Image = "7.jpg" },
                 new Product { Name = "Galaxy A15", Description = "Uygun fiyatlı, geniş ekranlı günlük akıllı telefon.", Price = 3490, Stock = 35, IsApproved = true, IsHome = true, CategoryId = 1, Image = "8.jpg" },
                 new Product { Name = "Samsung Çamaşır Makinesi", Description = "AI teknolojisiyle akıllı ve sessiz yıkama deneyimi.", Price = 29000, Stock = 18, IsApproved = true, IsHome = false, CategoryId = 5, Image = "9.jpg" }
+                
+
             };
 
             foreach (var urun in products)

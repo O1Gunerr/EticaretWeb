@@ -1,153 +1,128 @@
 ﻿using İlkProjeWebUI.Entity;
 using İlkProjeWebUI.Models;
+using Microsoft.Owin.Security.Provider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace İlkProjeWebUI.Controllers
 {
     public class CartController : Controller
     {
-        private readonly DataContext _context = new DataContext();
+        private DataContext db = new DataContext();
 
         // GET: /Cart
         public ActionResult Index()
         {
-            var cart = Session["cart"] as List<ProductModel>
-                       ?? new List<ProductModel>();
-
-            ViewBag.CouponCode = Session["CouponCode"] as string;
-            ViewBag.Discount = Session["CouponDiscount"] as decimal? ?? 0m;
-
-            return View(cart);
+            return View(GetCart());
         }
 
-        // Sepete ürün ekle
-        public ActionResult AddToCart(int id)
+        public ActionResult AddToCart(int Id)
         {
-            var item = _context.Products
-                               .Where(p => p.Id == id)
-                               .Select(p => new ProductModel
-                               {
-                                   Id = p.Id,
-                                   Name = p.Name,
-                                   Price = p.Price,
-                                   Image = p.Image,
-                                   Quantity = 1
-                               })
-                               .FirstOrDefault();
-
-            if (item != null)
+            var product = db.Products.FirstOrDefault(i => i.Id == Id);
+            if (product != null)
             {
-                var cart = Session["cart"] as List<ProductModel>
-                           ?? new List<ProductModel>();
-                var exist = cart.FirstOrDefault(c => c.Id == id);
-                if (exist != null) exist.Quantity++;
-                else cart.Add(item);
-
-                Session["cart"] = cart;
-                Session["CartCount"] = cart.Sum(c => c.Quantity);
+                GetCart().AddProduct(product, 1);
             }
+            return RedirectToAction("Index");
 
-            return RedirectToAction("Index", "Home");
         }
 
-        // Sepetteki miktarı güncelle
+        public ActionResult RemoveFromCart(int Id)
+        {
+            var product = db.Products.FirstOrDefault(i => i.Id == Id);
+            if (product != null)
+            {
+                GetCart().DeleteProduct(product);
+            }
+            return RedirectToAction("Index");
+
+        }
+        public Cart GetCart()
+        {
+            var cart = (Cart)(Session["Cart"]);
+            if (cart == null)
+            {
+                cart = new Cart();
+                Session["Cart"] = cart;
+            }
+            return cart;
+        }
+        public PartialViewResult Summary()
+        {
+            var count = GetCart().CartLines.Sum(l => l.Quantity);
+            ViewBag.CartCount = count;
+            return PartialView("_CartSummary");
+        }
+       
+        [Authorize]
+        public ActionResult Checkout()
+        {
+
+            return View(new ShippingDetails());
+        }
         [HttpPost]
-        public ActionResult UpdateQuantity(int id, int quantity)
+        public ActionResult Checkout(ShippingDetails entity)
         {
-            var cart = Session["cart"] as List<ProductModel>;
-            if (cart != null)
+            var cart = GetCart();
+
+            if (cart.CartLines.Count == 0)
             {
-                var item = cart.FirstOrDefault(c => c.Id == id);
-                if (item != null)
+                ModelState.AddModelError("","Sepetinizde ürün bulunmamaktadır.");
+            }
+            else
+            {
+                if (ModelState.IsValid)
                 {
-                    if (quantity <= 0) cart.Remove(item);
-                    else item.Quantity = quantity;
 
-                    Session["cart"] = cart;
-                    Session["CartCount"] = cart.Sum(c => c.Quantity);
+                    SaveOrder(cart,entity);
+
+                    cart.Clear();
+
+                    return View("Completed");
                 }
+                return View(entity);
             }
-            return RedirectToAction("Index");
+
+            return View();
         }
 
-        // Sepetten ürün çıkar
-        public ActionResult RemoveFromCart(int id)
+        private void SaveOrder(Cart cart, ShippingDetails entity)
         {
-            // Mevcut sepeti al, boşsa yeni liste oluştur
-            var cart = Session["cart"] as List<ProductModel>
-                       ?? new List<ProductModel>();
+            var order= new Order();
 
-            // Çıkarılacak ürünü bul
-            var item = cart.FirstOrDefault(c => c.Id == id);
-            if (item != null)
-            {
-                cart.Remove(item);
+            order.OrderNumber = "S"+(new Random()).Next(11111,99999).ToString();
+            order.Total = (decimal)cart.Total();
+            order.Date = DateTime.Now;
+            order.OrderState=EnumOrderState.Waiting;
+            order.Username=User.Identity.Name;
 
-                // Session’a güncellenmiş sepeti ve toplam adet sayısını kaydet
-                Session["cart"] = cart;
-                Session["CartCount"] = cart.Sum(c => c.Quantity);
-
-                // Eğer sepet boşaldıysa, kupon bilgisini ve indirim tutarını sıfırla
-                if (!cart.Any())
-                {
-                    Session["CouponCode"] = null;
-                    Session["CouponDiscount"] = 0m;
-                }
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        // POST: Kupon kodu uygula
-        [HttpPost]
-        public ActionResult ApplyCoupon(string couponCode)
-        {
-            if (string.IsNullOrWhiteSpace(couponCode))
-            {
-                TempData["CouponError"] = "Lütfen bir kupon kodu girin.";
-                return RedirectToAction("Index");
-            }
-
-            // Süresi dolmamış kuponu ara
-            var coupon = _context.Coupons
-                                 .FirstOrDefault(c =>
-                                     c.Code == couponCode &&
-                                     c.ExpirationDate >= DateTime.Now);
-            if (coupon == null)
-            {
-                TempData["CouponError"] = "Kupon bulunamadı veya süresi dolmuş.";
-                return RedirectToAction("Index");
-            }
-
-            // Sepet toplamını hesapla
-            var cart = Session["cart"] as List<ProductModel>
-                           ?? new List<ProductModel>();
-            var subtotal = cart.Sum(c => c.Price * c.Quantity);
-
-            // İndirimi hesapla: yüzde mi, sabit mi?
-            decimal discountAmount = coupon.IsPercentage
-                ? subtotal * coupon.DiscountValue / 100m
-                : coupon.DiscountValue;
-
-            // Session’a kaydet
-            Session["CouponCode"] = couponCode;
-            Session["CouponDiscount"] = discountAmount;
-
-            TempData["CouponSuccess"] = $"“{couponCode}” kodu uygulandı, {discountAmount:C2} indirim kazandınız.";
-            return RedirectToAction("Index");
-        }
-
-        // Kuponu kaldır
-        public ActionResult RemoveCoupon()
-        {
-            Session.Remove("CouponCode");
-            Session.Remove("CouponDiscount");
             
-            return RedirectToAction("Index");
+            order.Adres = entity.Adres;
+            order.sehir = entity.sehir;
+            order.Semt = entity.Semt;
+            order.Mahalle = entity.Mahalle;
+            order.AdresTarif = entity.AdresTarif;
 
+            order.OrderLine = new List<OrderLine>();
+
+            foreach (var pr in cart.CartLines)
+            {
+                OrderLine orderline=new OrderLine();
+                orderline.Quantity = pr.Quantity;
+                orderline.Price = (pr.Quantity*pr.Product.Price);
+                orderline.ProductId = pr.Product.Id;
+
+                order.OrderLine.Add(orderline);
+            }
+            db.Orders.Add(order);
+            db.SaveChanges();
         }
     }
 }
+
+
+    
+

@@ -13,7 +13,7 @@ namespace İlkProjeWebUI.Entity
         public string Description { get; set; }
         [DisplayName("Ürün Fiyatı")]
 
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         [DisplayName("Ürün Stok")]
 
         public int Stock { get; set; }

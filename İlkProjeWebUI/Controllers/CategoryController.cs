@@ -9,18 +9,19 @@ using System.Web.Mvc;
 using İlkProjeWebUI.Entity;
 
 namespace İlkProjeWebUI.Controllers
-{
+{ 
+    
+ [Authorize(Roles = "admin")]
     public class CategoryController : Controller
     {
         private DataContext db = new DataContext();
-
+       
         // GET: Category
         public ActionResult Index()
         {
             return View(db.Categories.ToList());
         }
 
-        // GET: Category/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,9 +42,7 @@ namespace İlkProjeWebUI.Controllers
             return View();
         }
 
-        // POST: Category/Create
-        // Aşırı gönderim saldırılarından korunmak için bağlamak istediğiniz belirli özellikleri etkinleştirin. 
-        // Daha fazla bilgi için bkz. https://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description")] Category category)

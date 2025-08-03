@@ -37,21 +37,42 @@ namespace İlkProjeWebUI.Controllers
             return View(urunler);
         }
 
-        public ActionResult List(string query = null)
+        public ActionResult List(string category,string query)
         {
-            var list = _context.Products
-                               .Where(p => p.IsApproved &&
-                                    (query == null || p.Name.Contains(query)))
-                               .Select(p => new ProductModel
-                               {
-                                   Id = p.Id,
-                                   Name = p.Name,
-                                   Description = p.Description,
-                                   Price = p.Price,
-                                   Image = p.Image ?? "1.jpg",
-                                   CategoryId = p.CategoryId
-                               })
+            var products = _context.Products
+        .Include("Category")
+        .Where(p => p.IsApproved);
+
+            // Kategori filtresi
+            if (!string.IsNullOrEmpty(category))
+            {
+                products = products.Where(p => p.Category.Name == category);
+            }
+
+            // Arama filtresi
+            if (!string.IsNullOrEmpty(query))
+            {
+                products = products.Where(p => p.Name.Contains(query));
+            }
+
+            var list = products
+                .Select(p => new ProductModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Image = p.Image ?? "1.jpg",
+                    CategoryId = p.CategoryId
+                })
+           
                                .ToList();
+
+
+            ViewBag.Kategoriler = _context.Categories.ToList();
+            ViewBag.SeciliKategori = category;
+            ViewBag.Arama = query;
+
             return View(list);
         }
 
